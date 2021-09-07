@@ -49,8 +49,7 @@ export default function Model(props) {
       y: rightdoor.current.position.y,
       z: rightdoor.current.position.z+250, 
     });  
-    setTimeout(() => {
-      // console.log('go up level') ;
+    setTimeout(() => { 
        goUpFloor();
     }, 2000);
   }
