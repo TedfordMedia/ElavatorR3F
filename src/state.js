@@ -13,7 +13,10 @@ const useStore = create((set) => ({
     upRaiser: () => set(state => ({ triggerRaiser: true })), 
     inc: () => set(state => ({ dollars: (state.dollars + 1) % 4 })),  
     goUpFloor: () => set(state => ({ floor: (state.floor + 1) % 4 })),  
-
+    // goxxUpFloor: function() {
+    //   console.log( "Hello World!")
+    //   set(state => ({ floor: (state.floor + 1) % 4 }))
+    // }, 
 }));
 
 export default useStore;

@@ -6,7 +6,7 @@ export default function Model(props) {
   const group = useRef()
   const upbutton = useRef()
   const { nodes, materials } = useGLTF('/elevator2.glb')
-  const { count, inc, dec, goUpFloor } = useStore()
+  const { goUpFloor } = useStore()
 
   return (
     <group ref={group} {...props} dispose={null}>
@@ -16,7 +16,7 @@ export default function Model(props) {
             <mesh geometry={nodes.B_Down_Material001_0.geometry} material={nodes.B_Down_Material001_0.material} />
             <mesh geometry={nodes.B_Down_Material003_0.geometry} material={nodes.B_Down_Material003_0.material} />
           </group>
-          <group ref={upbutton}  onClick={inc} position={[299, 210, 318]} rotation={[-Math.PI / 2, 0, 0]} scale={[2.53, 14.59, 13.76]}>
+          <group ref={upbutton}  onClick={goUpFloor} position={[299, 210, 318]} rotation={[-Math.PI / 2, 0, 0]} scale={[2.53, 14.59, 13.76]}>
             <mesh
               geometry={nodes.B_Up_Material001_0.geometry}
               material={nodes.B_Up_Material001_0.material}

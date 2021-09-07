@@ -13,7 +13,7 @@ function Box(props) {
   // Set up state for the hovered and active state
   const [hovered, setHover] = useState(false)
   const [active, setActive] = useState(false)
-  const { count, inc, dec, upRaiser } = useStore()
+  const {  upRaiser } = useStore()
 
   // Rotate mesh every frame, this is outside of React without overhead
   useFrame(() => {
@@ -24,7 +24,7 @@ function Box(props) {
       {...props}
       ref={ref}
       scale={active ? 1.5 : 1}
-      onClick={inc}
+      onClick={upRaiser}
       onPointerOver={(e) => setHover(true)}
       onPointerOut={(e) => setHover(false)}>
       <boxGeometry args={[1, 1, 1]} />
@@ -39,7 +39,7 @@ function BoxRaise(props) {
   // Set up state for the hovered and active state
   const [hovered, setHover] = useState(false)
   const [active, setActive] = useState(false)
-  const { count, inc, dec, upRaiser } = useStore()
+  const { upRaiser } = useStore()
  
   return (
     <mesh
@@ -57,11 +57,10 @@ function BoxRaise(props) {
  
 export default function App() {
   
-  const refelevatorgroup = useRef()
-  const dollars = useStore((state) => state.dollars)
+  const refelevatorgroup = useRef() 
   const floor = useStore((state) => state.floor)
   const raiser = useStore((state) => state.triggerRaiser)
-  const { inc, dec ,clearRaiser } = useStore()
+  const {  clearRaiser } = useStore()
  
   if (raiser){ 
 
@@ -75,9 +74,8 @@ export default function App() {
 
   }
  
-console.log('dollars:'+dollars);
-
-
+  console.log('floor:'+floor);
+  
   return (
     <Canvas   
       onCreated={({ gl, camera, scene }) => {  
