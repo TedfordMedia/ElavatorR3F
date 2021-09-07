@@ -3,6 +3,7 @@ import create from "zustand"
  function setupLevelsData(){ 
   //maybe should move this to a JSON file, TBC
 
+  //TEST DATA
   var data = [];
   var obj = {};
   
@@ -19,14 +20,17 @@ import create from "zustand"
   obj['backg'] = 'forest';
   obj['name'] = 'thirdlevel';
   data.push(obj) 
+
   obj = {};
   obj['backg'] = 'sunset';
   obj['name'] = 'forthlevel';
   data.push(obj) 
+
   obj = {};
   obj['backg'] = 'park';
   obj['name'] = 'fifthlevel';
   data.push(obj) 
+
   obj = {};
   obj['backg'] = 'lobby';
   obj['name'] = 'sixthlevel';
