@@ -1,38 +1,40 @@
-import React, { useRef, useState, Suspense  } from 'react'
+import React, { useRef, useState, Suspense, useEffect  } from 'react'
 import { Canvas } from '@react-three/fiber'
 import Elevator from "./models/Elevator2"; 
+import Flamingo from "./models/Flamingo"; 
 import { OrbitControls, Sky, Environment, Html } from '@react-three/drei'
+
 import * as THREE from 'three'
-import { useGLTF } from '@react-three/drei'
+import { Box } from '@react-three/drei'
 import { gsap } from "gsap";   
 import useStore from './state';
- 
- 
-const TV = () => {
-  
+import { useAspect } from "@react-three/drei";
+
+ import MyFlock from "./components/flocks" 
+function Scene() {
+  const size = useAspect(1800, 1000);
   const [video] = useState(() => {
     const vid = document.createElement("video");
-    vid.src =  "./donna.mp4";
+    vid.src = "donna.mp4";
     vid.crossOrigin = "Anonymous";
     vid.loop = true;
     vid.muted = true;
-    vid.play();
     return vid;
   });
-
+  // Keep in mind videos can only play once the user has interacted with the site ...
+  useEffect(() => void video.play(), [video]);
   return (
-    <group position={[0, 1, 0]} rotation={[Math.PI / 8, Math.PI * 1.2, 0]}>
- 
-      <mesh rotation={[0, Math.PI , 0]} position={[0, 0, 1.1]}>
-        <planeGeometry args={[3.2, 1.9]} />
-        <meshStandardMaterial   emissive={"white"} side={THREE.DoubleSide}>
-          <videoTexture attach="map" args={[video]} />
-          <videoTexture attach="emissiveMap" args={[video]} />
-        </meshStandardMaterial>
-      </mesh>
-    </group>
+    <mesh scale={size}>
+      <planeBufferGeometry args={[1, 1]} />
+      <meshBasicMaterial>
+        <videoTexture attach="map" args={[video]} />
+      </meshBasicMaterial>
+    </mesh>
   );
-};
+}
+
+// This component was auto-generated from GLTF by: https://github.com/react-spring/gltfjsx
+
   
 function BoxNext(props) {
   // This reference will give us direct access to the mesh
@@ -63,8 +65,24 @@ function BoxRaise(props) {
   const [hovered, setHover] = useState(false)
   const [active, setActive] = useState(false)
   const { upRaiser } = useStore()
- 
+
+  const raiser = useStore((state) => state.triggerRaiser)
+
+  useEffect((state, delta) => {  
+
+    if (raiser){ //raiser is first initial Elevator appear through floor
+
+      gsap.to( ref.current.position, {
+        duration: 2,  
+        x: ref.current.position.x,
+        y: ref.current.position.y+18.7,
+        z: ref.current.position.z, 
+      });  
+    } 
+  })
+
   return (
+     
     <mesh
       {...props}
       ref={ref}
@@ -80,28 +98,35 @@ function BoxRaise(props) {
  
 export default function App() {
   
-  const refelevatorgroup = useRef()  
+  const refelevatorgroup = useRef()   
+  const boxraiz = useRef();
+
   const floor = useStore((state) => state.floor)
   const doorOpener = useStore((state) => state.doorOpener)
   const levelsDataArray = useStore((state) => state.levelsDataArray)
   const raiser = useStore((state) => state.triggerRaiser)
   const {  clearRaiser } = useStore()
-
-
-  if (raiser){ 
-
-    gsap.to( refelevatorgroup.current.position, {
-      duration: 2,  
-      x: refelevatorgroup.current.position.x,
-      y: refelevatorgroup.current.position.y+8.7,
-      z: refelevatorgroup.current.position.z, 
-    }); 
-
-    setTimeout(() => { 
-      clearRaiser();;// this should really be done with ONCOMPLETE of the animation ..
-    }, 2000)
  
-  }
+
+  useEffect((state, delta) => {  
+
+    if (raiser){ //raiser is first initial Elevator appear through floor
+
+      gsap.to( refelevatorgroup.current.position, {
+        duration: 2,  
+        x: refelevatorgroup.current.position.x,
+        y: refelevatorgroup.current.position.y+8.7,
+        z: refelevatorgroup.current.position.z, 
+      }); 
+
+     
+      setTimeout(() => { 
+        clearRaiser();;// this should really be done with ONCOMPLETE of the animation ..
+      }, 2000)
+  
+    } 
+  })
+
  
   const thisLevel = levelsDataArray[floor]
   console.log('floor:'+floor+' raiser:'+raiser+' doorOpener:'+doorOpener);
@@ -127,6 +152,24 @@ export default function App() {
       <Suspense fallback={<Html></Html>}>  
         <Environment preset={thisLevel.backg} background /> 
       </Suspense>
+   
+      //just boxes for fun!
+      {floor === 1 &&
+          <Box  args={[3, 1, 1]}/>
+      }
+
+      {floor === 2 && 
+        <MyFlock/>
+      }
+ 
+      {floor === 2 &&
+        <Box args={[1, 10, 1]} position={[0, 0,-10]}/>
+      }
+ 
+      {/* {floor === 3 &&
+        // <Scene args={[1, 10, 1]} position={[0, 0,-10]}/>
+      } */}
+      //just boxes for fun!
 
       <OrbitControls target={[0,0,0]}/>   
     </Canvas>

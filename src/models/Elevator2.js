@@ -3,36 +3,35 @@ import { useGLTF } from '@react-three/drei'
 import useStore from '../state';
 import { gsap } from "gsap";   
 import useSound from 'use-sound'
-import bump from '../audio/enterGame.mp3' 
-import lift from '../audio/open.mp3' 
+import enterNoise from '../audio/enterGame.mp3' 
+import liftopen from '../audio/open.mp3' 
  
 export default function Model(props) {
-  const group = useRef()
-  const upbutton = useRef()
+
   const { nodes, materials } = useGLTF('/elevator2.glb')
+
   const { doorOpen } = useStore(); 
   const { goUpFloor } = useStore(); 
- 
-  const leftdoor = useRef() 
-  const rightdoor = useRef()  
   const doorOpener = useStore((state) => state.doorOpener) 
   const doorCloser = useStore((state) => state.doorCloser) 
-    
-  const [play] = useSound(bump, {
-    volume: 0.13 ,
+
+  const group = useRef()
+  const upbutton = useRef()
+  const leftdoor = useRef() 
+  const rightdoor = useRef()  
+ 
+  const [playenterNoise] = useSound(enterNoise, {
+    volume: 0.08 ,
     onend: () => {
       // console.info('Sound ended!')
     }
   })
-  const [play2] = useSound(lift, {
-    volume: 0.13 ,
-    onend: () => {
-      // console.info('Sound ended!')
-    }
+  const [playliftopenAudio] = useSound(liftopen, {
+    volume: 0.23 ,  
   })
 
   if (doorOpener){ 
-    play();   
+    playenterNoise();   
  
     gsap.to( leftdoor.current.position, {
       duration: 1.2,  
@@ -50,8 +49,8 @@ export default function Model(props) {
     }); 
 
     setTimeout(() => { 
-    play2();
-    }, 200) 
+      playliftopenAudio();
+    }, 1200) 
   }
 
   //would be better off just reversing thetimeline!!!!!
