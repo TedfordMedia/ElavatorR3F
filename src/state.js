@@ -91,7 +91,7 @@ const useStore = create((set) => ({
 
     goUpFloor: () => { 
       // set(state => ({ floor: state.floor + 1 }));
-      console.log('i should goUpFloor')
+      // console.log('i should goUpFloor')
     },
 
     doorOpen: () => { 
