@@ -8,32 +8,32 @@ import create from "zustand"
   var obj = {};
   
   obj['backg'] = 'dawn';
-  obj['name'] = 'firstlevel';
+  obj['name'] = 'groundlevel';
   data.push(obj)
 
   obj = {};
   obj['backg'] = 'night';
-  obj['name'] = 'secondlevel';
+  obj['name'] = '1level';
   data.push(obj)
 
   obj = {};
   obj['backg'] = 'forest';
-  obj['name'] = 'thirdlevel';
+  obj['name'] = '2level';
   data.push(obj) 
 
   obj = {};
   obj['backg'] = 'sunset';
-  obj['name'] = 'forthlevel';
+  obj['name'] = '3level';
   data.push(obj) 
 
   obj = {};
   obj['backg'] = 'park';
-  obj['name'] = 'fifthlevel';
+  obj['name'] = '4level';
   data.push(obj) 
 
   obj = {};
   obj['backg'] = 'lobby';
-  obj['name'] = 'sixthlevel';
+  obj['name'] = '5level';
   data.push(obj) 
 
   return data;  
