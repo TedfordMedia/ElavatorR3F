@@ -53,9 +53,7 @@ export default function Model(props) {
       playliftopenAudio();
     }, 1200) 
   }
-
-  //would be better off just reversing thetimeline!!!!!
-  //better off just reversing thetimeline!!!!!
+ 
   if (doorCloser){ 
     console.log('doorCloser animate door')
     gsap.to( leftdoor.current.position, {

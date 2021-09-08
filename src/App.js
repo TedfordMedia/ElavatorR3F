@@ -1,7 +1,7 @@
 import React, { useRef, useState, Suspense, useEffect  } from 'react'
 import { Canvas } from '@react-three/fiber'
 import Elevator from "./models/Elevator2"; 
-import Flamingo from "./models/Flamingo"; 
+import Whiteshirt from "./models/Whitelongshirt"; 
 import { OrbitControls, Sky, Environment, Html } from '@react-three/drei'
 
 import * as THREE from 'three'
@@ -107,22 +107,7 @@ function BoxRaise(props) {
     </mesh>
   )
 }
-function setUserDetails(state){
-    //setup person details
  
-
-
-
-  // if (urlParams.has('theid')){  
-  
-  //         checkUserDetails(state);
-  //         var thisPerson = 
-  //     } else { 
-  //       set(state => ({ personDisplayName: true }))
-  //     }
-
-}
-
 export default function App() {
   
   const refelevatorgroup = useRef()    
@@ -131,8 +116,7 @@ export default function App() {
   const personDisplayName = useStore((state) => state.personDisplayName)
   const peopleArray = useStore((state) => state.peopleArray)
   const levelsDataArray = useStore((state) => state.levelsDataArray)
-  const raiser = useStore((state) => state.triggerRaiser)
-  // const setName = useStore((state) => state.setName)
+  const raiser = useStore((state) => state.triggerRaiser) 
   const {  setName } = useStore() 
   const {  clearRaiser } = useStore() 
 
@@ -171,7 +155,6 @@ export default function App() {
   const thisLevel = levelsDataArray[floor]
   console.log('floor:'+floor+' raiser:'+raiser+' doorOpener:'+doorOpener);
   console.log(JSON.stringify(thisLevel))
- 
   
   return (
     <Canvas   
@@ -184,7 +167,7 @@ export default function App() {
 
       <Suspense fallback={<Html><h1 style={{color:'black'}}>Loading...</h1></Html>}>   
         <BoxRaise position={[1, 1, 0]} >           </BoxRaise>   
-        <BoxNext position={[2, 1, 0]} />   
+        <BoxNext position={[0, 1, 0]} />   
         <group ref={refelevatorgroup} position={[0, -10, 4]} scale={[.1,.1,.1]} rotation={[0, Math.PI / 2, 0]}>
           <Elevator /> 
         </group> 
@@ -195,7 +178,7 @@ export default function App() {
       </Suspense>
     
       {floor === 1 &&
-        <Box  args={[3, 1, 1]}/>
+        <Whiteshirt/> 
       }
 
       {floor === 2 && 
