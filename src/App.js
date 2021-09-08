@@ -1,20 +1,18 @@
-import React, { useRef, useState, Suspense, useEffect } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import React, { useRef, useState, Suspense  } from 'react'
+import { Canvas } from '@react-three/fiber'
 import Elevator from "./models/Elevator2"; 
-import { OrbitControls, Sky, Environment, Html, Plane } from '@react-three/drei'
+import { OrbitControls, Sky, Environment, Html } from '@react-three/drei'
 import * as THREE from 'three'
-import create from 'zustand'
+import { useGLTF } from '@react-three/drei'
 import { gsap } from "gsap";   
 import useStore from './state';
-// import url from "/static/arintro.mp4";
-
+ 
  
 const TV = () => {
-  const { nodes } = useGLTF("tv.gltf");
-
+  
   const [video] = useState(() => {
     const vid = document.createElement("video");
-    vid.src =  "/video/donna.mp4";
+    vid.src =  "./donna.mp4";
     vid.crossOrigin = "Anonymous";
     vid.loop = true;
     vid.muted = true;
@@ -24,9 +22,7 @@ const TV = () => {
 
   return (
     <group position={[0, 1, 0]} rotation={[Math.PI / 8, Math.PI * 1.2, 0]}>
-      <mesh castShadow geometry={nodes.TV.geometry}>
-        <meshStandardMaterial color="grey" />
-      </mesh>
+ 
       <mesh rotation={[0, Math.PI , 0]} position={[0, 0, 1.1]}>
         <planeGeometry args={[3.2, 1.9]} />
         <meshStandardMaterial   emissive={"white"} side={THREE.DoubleSide}>
@@ -37,8 +33,7 @@ const TV = () => {
     </group>
   );
 };
- 
-
+  
 function BoxNext(props) {
   // This reference will give us direct access to the mesh
   const ref = useRef()
@@ -91,7 +86,8 @@ export default function App() {
   const levelsDataArray = useStore((state) => state.levelsDataArray)
   const raiser = useStore((state) => state.triggerRaiser)
   const {  clearRaiser } = useStore()
- 
+
+
   if (raiser){ 
 
     gsap.to( refelevatorgroup.current.position, {
@@ -101,7 +97,7 @@ export default function App() {
       z: refelevatorgroup.current.position.z, 
     }); 
 
-    setTimeout(() => {
+    setTimeout(() => { 
       clearRaiser();;// this should really be done with ONCOMPLETE of the animation ..
     }, 2000)
  

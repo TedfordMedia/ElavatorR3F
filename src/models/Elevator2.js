@@ -2,6 +2,9 @@ import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import useStore from '../state';
 import { gsap } from "gsap";   
+import useSound from 'use-sound'
+import bump from '../audio/enterGame.mp3' 
+ 
  
 export default function Model(props) {
   const group = useRef()
@@ -14,9 +17,17 @@ export default function Model(props) {
   const rightdoor = useRef()  
   const doorOpener = useStore((state) => state.doorOpener) 
   const doorCloser = useStore((state) => state.doorCloser) 
-   
+    
+  const [play] = useSound(bump, {
+    volume: 0.13 ,
+    onend: () => {
+      console.info('Sound ended!')
+    }
+  })
+
   if (doorOpener){ 
-    console.log('doorOpener animate door')
+    play();   
+
     gsap.to( leftdoor.current.position, {
       duration: 2,  
       delay: .8,
@@ -31,6 +42,10 @@ export default function Model(props) {
       y: rightdoor.current.position.y,
       z: rightdoor.current.position.z-250, 
     }); 
+
+    setTimeout(() => { 
+
+    }, 2000) 
   }
 
   //would be better off just reversing thetimeline!!!!!
