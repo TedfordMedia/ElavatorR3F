@@ -4,7 +4,7 @@ import useStore from '../state';
 import { gsap } from "gsap";   
 import useSound from 'use-sound'
 import bump from '../audio/enterGame.mp3' 
- 
+import lift from '../audio/open.mp3' 
  
 export default function Model(props) {
   const group = useRef()
@@ -21,31 +21,37 @@ export default function Model(props) {
   const [play] = useSound(bump, {
     volume: 0.13 ,
     onend: () => {
-      console.info('Sound ended!')
+      // console.info('Sound ended!')
+    }
+  })
+  const [play2] = useSound(lift, {
+    volume: 0.13 ,
+    onend: () => {
+      // console.info('Sound ended!')
     }
   })
 
   if (doorOpener){ 
     play();   
-
+ 
     gsap.to( leftdoor.current.position, {
-      duration: 2,  
-      delay: .8,
+      duration: 1.2,  
+      delay: 1,
       x: leftdoor.current.position.x,
       y: leftdoor.current.position.y,
       z: leftdoor.current.position.z+250, 
     }); 
     gsap.to( rightdoor.current.position, {
-      duration: 2,  
-      delay: .8,
+      duration: 1.2,  
+      delay: 1,
       x: rightdoor.current.position.x,
       y: rightdoor.current.position.y,
       z: rightdoor.current.position.z-250, 
     }); 
 
     setTimeout(() => { 
-
-    }, 2000) 
+    play2();
+    }, 200) 
   }
 
   //would be better off just reversing thetimeline!!!!!
