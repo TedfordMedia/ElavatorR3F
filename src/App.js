@@ -8,9 +8,9 @@ import * as THREE from 'three'
 import { Box } from '@react-three/drei'
 import { gsap } from "gsap";   
 import useStore from './state';
-import { useAspect } from "@react-three/drei";
+import { useAspect } from "@react-three/drei"; 
+import MyFlock from "./components/flocks" 
 
- import MyFlock from "./components/flocks" 
 function Scene() {
   const size = useAspect(1800, 1000);
   const [video] = useState(() => {
@@ -32,10 +32,16 @@ function Scene() {
     </mesh>
   );
 }
-
-// This component was auto-generated from GLTF by: https://github.com/react-spring/gltfjsx
-
-  
+   
+const Label = ({ text, position }) => {
+  return (
+    <mesh position={position}> 
+      <Html>
+        <div className="label">{text}</div>
+      </Html>
+    </mesh>
+  )
+}
 function BoxNext(props) {
   // This reference will give us direct access to the mesh
   const ref = useRef()
@@ -43,18 +49,24 @@ function BoxNext(props) {
   const [hovered, setHover] = useState(false)
   const [active, setActive] = useState(false)
   const { doorClose } = useStore()
- 
+  const personDisplayName = useStore((state) => state.personDisplayName)
+
   return (
-    <mesh
-      {...props}
-      ref={ref}
-      scale={active ? 1.5 : 1}
-      onClick={doorClose}
-      onPointerOver={(e) => setHover(true)}
-      onPointerOut={(e) => setHover(false)}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color={hovered ? 'purple' : 'blue'} />
-    </mesh>
+    <group>     
+      <mesh
+        {...props}
+        ref={ref}
+        scale={active ? 1.5 : 1}
+        onClick={doorClose}
+        onPointerOver={(e) => setHover(true)}
+        onPointerOut={(e) => setHover(false)}>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color={hovered ? 'purple' : 'blue'} />    
+        <Label text={personDisplayName} position={[0, 0, 0]} />
+      </mesh>
+  
+    </group>
+ 
   )
 }
 
@@ -95,21 +107,52 @@ function BoxRaise(props) {
     </mesh>
   )
 }
+function setUserDetails(state){
+    //setup person details
  
+
+
+
+  // if (urlParams.has('theid')){  
+  
+  //         checkUserDetails(state);
+  //         var thisPerson = 
+  //     } else { 
+  //       set(state => ({ personDisplayName: true }))
+  //     }
+
+}
+
 export default function App() {
   
-  const refelevatorgroup = useRef()   
-  const boxraiz = useRef();
-
+  const refelevatorgroup = useRef()    
   const floor = useStore((state) => state.floor)
   const doorOpener = useStore((state) => state.doorOpener)
+  const personDisplayName = useStore((state) => state.personDisplayName)
+  const peopleArray = useStore((state) => state.peopleArray)
   const levelsDataArray = useStore((state) => state.levelsDataArray)
   const raiser = useStore((state) => state.triggerRaiser)
-  const {  clearRaiser } = useStore()
- 
+  // const setName = useStore((state) => state.setName)
+  const {  setName } = useStore() 
+  const {  clearRaiser } = useStore() 
 
   useEffect((state, delta) => {  
-
+ 
+    const search = window.location.search;
+    const params = new URLSearchParams(search);
+    var theid = params.get('theid');
+   
+    // // setup person details  
+    if (!personDisplayName){  
+      if (!theid){
+        theid = 0;
+      } 
+      const name = peopleArray[theid].name; 
+      if (name){
+        setName(name);
+      } 
+    }  
+ 
     if (raiser){ //raiser is first initial Elevator appear through floor
 
       gsap.to( refelevatorgroup.current.position, {
@@ -118,19 +161,17 @@ export default function App() {
         y: refelevatorgroup.current.position.y+8.7,
         z: refelevatorgroup.current.position.z, 
       }); 
-
-     
+ 
       setTimeout(() => { 
         clearRaiser();;// this should really be done with ONCOMPLETE of the animation ..
-      }, 2000)
-  
+      }, 2000) 
     } 
   })
-
  
   const thisLevel = levelsDataArray[floor]
   console.log('floor:'+floor+' raiser:'+raiser+' doorOpener:'+doorOpener);
   console.log(JSON.stringify(thisLevel))
+ 
   
   return (
     <Canvas   
@@ -142,20 +183,19 @@ export default function App() {
       <ambientLight intensity={0.5} /> 
 
       <Suspense fallback={<Html><h1 style={{color:'black'}}>Loading...</h1></Html>}>   
-        <BoxRaise position={[1, 1, 0]} />   
+        <BoxRaise position={[1, 1, 0]} >           </BoxRaise>   
         <BoxNext position={[2, 1, 0]} />   
         <group ref={refelevatorgroup} position={[0, -10, 4]} scale={[.1,.1,.1]} rotation={[0, Math.PI / 2, 0]}>
-          <Elevator />
+          <Elevator /> 
         </group> 
       </Suspense>
 
       <Suspense fallback={<Html></Html>}>  
         <Environment preset={thisLevel.backg} background /> 
       </Suspense>
-   
-      //just boxes for fun!
+    
       {floor === 1 &&
-          <Box  args={[3, 1, 1]}/>
+        <Box  args={[3, 1, 1]}/>
       }
 
       {floor === 2 && 
@@ -164,13 +204,8 @@ export default function App() {
  
       {floor === 2 &&
         <Box args={[1, 10, 1]} position={[0, 0,-10]}/>
-      }
+      }  
  
-      {/* {floor === 3 &&
-        // <Scene args={[1, 10, 1]} position={[0, 0,-10]}/>
-      } */}
-      //just boxes for fun!
-
       <OrbitControls target={[0,0,0]}/>   
     </Canvas>
   )

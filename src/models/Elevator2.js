@@ -1,10 +1,11 @@
 import React, { useRef } from 'react'
-import { useGLTF } from '@react-three/drei'
+import { useGLTF, Html , Box} from '@react-three/drei'
 import useStore from '../state';
 import { gsap } from "gsap";   
 import useSound from 'use-sound'
 import enterNoise from '../audio/enterGame.mp3' 
 import liftopen from '../audio/open.mp3' 
+
  
 export default function Model(props) {
 
@@ -14,7 +15,7 @@ export default function Model(props) {
   const { goUpFloor } = useStore(); 
   const doorOpener = useStore((state) => state.doorOpener) 
   const doorCloser = useStore((state) => state.doorCloser) 
-
+  const personDisplayName = useStore((state) => state.personDisplayName)
   const group = useRef()
   const upbutton = useRef()
   const leftdoor = useRef() 
